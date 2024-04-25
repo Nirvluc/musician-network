@@ -1,0 +1,525 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(igraph)
+
+nodes <- read.csv("snoop_all_3_node.csv", header = TRUE)
+
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "max")
+
+V(graph)$name <- nodes$sort_name
+
+plot(graph, vertex.label = NA, vertex.size = 3)
+```
+
+
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_3rd_node.csv", header = TRUE, fileEncoding = "GBK")
+filtered_nodes <- read.csv("snoop_3rd_rock.csv", header = TRUE, fileEncoding = "GBK")  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "undirected")
+V(graph)$name <- all_nodes$sort_name
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+V(graph)$color <- ifelse(V(graph)$name %in% filtered_node_names, "red", "blue")
+
+# 设置特殊类别节点的颜色和形状
+special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
+
+# 创建与节点数量相同长度的颜色和形状属性值
+color_values <- rep("blue", vcount(graph))
+shape_values <- rep("circle", vcount(graph))
+
+# 将特殊节点的颜色和形状设置为绿色和方形
+color_values[special_nodes_indices] <- "green"
+shape_values[special_nodes_indices] <- "square"
+
+# 将颜色和形状属性值应用于图的节点
+V(graph)$color <- color_values
+V(graph)$shape <- shape_values
+
+# 绘制网络
+plot(graph,layout=layout_nicely(graph), vertex.label = NA, vertex.size = 3)
+```
+
+
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_3rd_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_3rd_pop.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "max")
+V(graph)$name <- all_nodes$sort_name
+
+# 使用Fruchterman-Reingold布局算法
+layout_fr <- layout_with_fr(graph)
+
+# 使用Kamada-Kawai布局算法
+layout_kk <- layout_with_kk(graph)
+
+# 使用Circular布局算法
+layout_circular <- layout_in_circle(graph)
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+V(graph)$color <- ifelse(V(graph)$name %in% filtered_node_names, "red", "blue")
+
+# 绘制网络
+plot(graph,layout = layout_nicely(graph), vertex.label = NA, vertex.size = 3)
+```
+
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_3rd_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_3rd_rock.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "max")
+V(graph)$name <- all_nodes$sort_name
+
+# 使用Fruchterman-Reingold布局算法
+layout_fr <- layout_with_fr(graph)
+
+# 使用Kamada-Kawai布局算法
+layout_kk <- layout_with_kk(graph)
+
+# 使用Circular布局算法
+layout_circular <- layout_in_circle(graph)
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+V(graph)$color <- ifelse(V(graph)$name %in% filtered_node_names, "red", "blue")
+
+# 绘制网络
+plot(graph,layout = layout_nicely(graph), vertex.label = NA, vertex.size = 3)
+```
+
+
+
+
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_rock.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "undirected")
+V(graph)$name <- all_nodes$sort_name
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+
+# 设置特殊类别节点的颜色和形状
+special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
+
+# 创建与节点数量相同长度的颜色和形状属性值
+color_values <- ifelse(V(graph)$name %in% filtered_node_names,"#e8490f","#44c1f0")
+shape_values <- rep("circle", vcount(graph))
+
+# 将特殊节点的颜色和形状设置为绿色和方形
+color_values[special_nodes_indices] <- "#E1E100"
+shape_values[special_nodes_indices] <- "square"
+
+# 将颜色和形状属性值应用于图的节点
+V(graph)$color <- color_values
+V(graph)$shape <- shape_values
+V(graph)$border <- color_values 
+E(graph)$width <- 0.1
+# 绘制网络，并只显示绿色节点的名称
+plot(graph, layout = layout_nicely(graph), vertex.label = NA, vertex.size = ifelse(V(graph)$color == "#E1E100", 6, 3.1),vertex.frame.color = V(graph)$border,edge.width = E(graph)$width)
+
+# 创建图例
+legend_text <- c("rock", "Snoop Dogg","Other")
+legend_colors <- c("#e8490f","#E1E100","#44c1f0")
+legend_shapes <- c(16, 15)  # 使用不同的整数值代表不同的形状，例如16代表圆形，15代表方形
+
+# 绘制图例
+legend(x = 1, y = 1, legend = legend_text, col = legend_colors, pch = legend_shapes, cex = 0.8)
+```
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_pop.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "undirected")
+V(graph)$name <- all_nodes$sort_name
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+
+# 设置特殊类别节点的颜色和形状
+special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
+
+# 创建与节点数量相同长度的颜色和形状属性值
+color_values <- ifelse(V(graph)$name %in% filtered_node_names,"#e8490f","#44c1f0")
+shape_values <- rep("circle", vcount(graph))
+
+# 将特殊节点的颜色和形状设置为绿色和方形
+color_values[special_nodes_indices] <- "yellow"
+shape_values[special_nodes_indices] <- "square"
+
+# 将颜色和形状属性值应用于图的节点
+V(graph)$color <- color_values
+V(graph)$shape <- shape_values
+V(graph)$border <- color_values 
+E(graph)$width <- 0.1
+# 绘制网络，并只显示绿色节点的名称
+plot(graph, layout = layout_nicely(graph), vertex.label = NA, vertex.size = ifelse(V(graph)$color == "yellow", 6, 3.1),vertex.frame.color = V(graph)$border,edge.width = E(graph)$width)
+
+# 创建图例
+legend_text <- c("pop", "Snoop Dogg","Other")
+legend_colors <- c("#e8490f","yellow","#44c1f0")
+legend_shapes <- c(16, 15)  # 使用不同的整数值代表不同的形状，例如16代表圆形，15代表方形
+
+# 绘制图例
+legend(x = 1, y = 1, legend = legend_text, col = legend_colors, pch = legend_shapes, cex = 0.8)
+
+node_degrees <- degree(graph)
+
+average_degree <- mean(node_degrees)
+
+cat("Average Degree:", average_degree, "\n")
+```
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_pop.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "undirected")
+V(graph)$name <- all_nodes$sort_name
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+
+# 设置特殊类别节点的颜色和形状
+special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
+
+# 创建与节点数量相同长度的颜色和形状属性值
+color_values <- ifelse(V(graph)$name %in% filtered_node_names, "#e8490f", "#156077")
+shape_values <- rep("circle", vcount(graph))
+
+# 将特殊节点的颜色和形状设置为绿色和方形
+color_values[special_nodes_indices] <- "#44c1f0"
+shape_values[special_nodes_indices] <- "square"
+
+# 将颜色和形状属性值应用于图的节点
+V(graph)$color <- color_values
+V(graph)$shape <- shape_values
+V(graph)$border <- color_values
+
+# 创建子图，只包含筛选出的节点
+subgraph_nodes <- V(graph)$name %in% filtered_node_names
+subgraph <- induced_subgraph(graph, subgraph_nodes)
+
+# 复制颜色和形状属性值到子图中的节点
+V(subgraph)$color <- V(graph)$color[subgraph_nodes]
+V(subgraph)$shape <- V(graph)$shape[subgraph_nodes]
+V(subgraph)$border <- V(graph)$border[subgraph_nodes]
+
+
+# 绘制网络，并只显示子图中的节点
+plot(subgraph, layout = layout_nicely(subgraph), vertex.label = NA, vertex.size = ifelse(V(subgraph)$color == "#44c1f0", 5, 3.1),vertex.frame.color = V(subgraph)$border)
+
+# 创建图例
+legend_text <- c("Pop")
+legend_colors <- c("#e8490f")
+legend_shapes <- c(16, 15)  # 使用不同的整数值代表不同的形状，例如16代表圆形，15代表方形
+
+# 绘制图例
+legend(x = 1, y = 1, legend = legend_text, col = legend_colors, pch = legend_shapes, cex = 0.8)
+
+# 计算节点的度数
+node_degrees <- degree(subgraph)
+
+# 计算节点数量
+node_counts <- length(V(subgraph))
+
+
+# 绘制度数的柱状图
+barplot(table(node_degrees), xlab = "Degree", ylab = "Node Count", main = "Node Count by Degree (Pop)")
+
+average_degree <- mean(node_degrees)
+
+# 输出平均度数
+cat("Average Degree:", average_degree, "\n")
+```
+```{r}
+library(igraph)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_rock.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 创建图对象
+graph <- graph_from_adjacency_matrix(as.matrix(adj_matrix), mode = "undirected")
+V(graph)$name <- all_nodes$sort_name
+
+# 筛选出的节点设置为红色
+filtered_node_names <- filtered_nodes$sort_name
+
+# 设置特殊类别节点的颜色和形状
+special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
+
+# 创建与节点数量相同长度的颜色和形状属性值
+color_values <- ifelse(V(graph)$name %in% filtered_node_names, "#e8490f", "#156077")
+shape_values <- rep("circle", vcount(graph))
+
+# 将特殊节点的颜色和形状设置为绿色和方形
+color_values[special_nodes_indices] <- "#44c1f0"
+shape_values[special_nodes_indices] <- "square"
+
+# 将颜色和形状属性值应用于图的节点
+V(graph)$color <- color_values
+V(graph)$shape <- shape_values
+V(graph)$border <- color_values
+
+# 创建子图，只包含筛选出的节点
+subgraph_nodes <- V(graph)$name %in% filtered_node_names
+subgraph <- induced_subgraph(graph, subgraph_nodes)
+
+# 复制颜色和形状属性值到子图中的节点
+V(subgraph)$color <- V(graph)$color[subgraph_nodes]
+V(subgraph)$shape <- V(graph)$shape[subgraph_nodes]
+V(subgraph)$border <- V(graph)$border[subgraph_nodes]
+
+# 绘制网络，并只显示子图中的节点
+plot(subgraph, layout = layout_nicely(subgraph), vertex.label = NA, vertex.size = ifelse(V(subgraph)$color == "#44c1f0", 5, 3.1),vertex.frame.color = V(subgraph)$border)
+
+# 创建图例
+legend_text <- c("Rock")
+legend_colors <- c("#e8490f")
+legend_shapes <- c(16, 15)  # 使用不同的整数值代表不同的形状，例如16代表圆形，15代表方形
+
+# 绘制图例
+legend(x = 1, y = 1, legend = legend_text, col = legend_colors, pch = legend_shapes, cex = 0.8)
+
+# 计算节点的度数
+node_degrees <- degree(subgraph)
+
+# 计算节点数量
+node_counts <- length(V(subgraph))
+
+
+# 绘制度数的柱状图
+barplot(table(node_degrees), xlab = "Degree", ylab = "Node Count", main = "Node Count by Degree (Rock)")
+
+average_degree <- mean(node_degrees)
+
+# 输出平均度数
+cat("Average Degree:", average_degree, "\n")
+```
+```{r}
+
+library(umap)
+library(ggplot2)
+
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_rock.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 执行 UMAP 分析
+umap_result <- umap(adj_matrix)
+
+x <- umap_result$layout[, 1]
+y <- umap_result$layout[, 2]
+
+# 创建散点图
+ggplot() +
+  geom_point(aes(x = x, y = y)) +
+  labs(x = "UMAP Dimension 1", y = "UMAP Dimension 2") +
+  ggtitle("UMAP Embedding")
+
+```
+```{r}
+library(umap)
+library(ggplot2)
+
+set.seed(444)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_pop.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 执行 UMAP 分析
+umap_result <- umap(adj_matrix)
+
+x <- umap_result$layout[, 1]
+y <- umap_result$layout[, 2]
+
+filtered_indices <- all_nodes$sort_name %in% filtered_nodes$sort_name
+
+# 创建数据框
+all_nodes_df <- data.frame(x = x, y = y)
+filtered_nodes_df <- all_nodes_df[filtered_indices, ]
+
+# 创建散点图，将筛选出的节点染成红色
+ggplot() +
+  geom_point(data = all_nodes_df, aes(x = x, y = y), color = "black", alpha = 0.5) +
+  geom_point(data = filtered_nodes_df, aes(x = x, y = y), color = "red") +
+  labs(x = "UMAP Dimension 1", y = "UMAP Dimension 2")
+```
+```{r}
+library(umap)
+library(ggplot2)
+
+set.seed(444)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_rock.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 执行 UMAP 分析
+umap_result <- umap(adj_matrix)
+
+x <- umap_result$layout[, 1]
+y <- umap_result$layout[, 2]
+
+filtered_indices <- all_nodes$sort_name %in% filtered_nodes$sort_name
+
+# 创建数据框
+all_nodes_df <- data.frame(x = x, y = y)
+filtered_nodes_df <- all_nodes_df[filtered_indices, ]
+
+# 创建散点图，将筛选出的节点染成红色
+ggplot() +
+  geom_point(data = all_nodes_df, aes(x = x, y = y), color = "black", alpha = 0.5) +
+  geom_point(data = filtered_nodes_df, aes(x = x, y = y), color = "red") +
+  labs(x = "UMAP Dimension 1", y = "UMAP Dimension 2") 
+```
+
+
+```{r}
+library(umap)
+library(ggplot2)
+
+set.seed(444)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_hop.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 执行 UMAP 分析
+umap_result <- umap(adj_matrix)
+
+x <- umap_result$layout[, 1]
+y <- umap_result$layout[, 2]
+
+filtered_indices <- all_nodes$sort_name %in% filtered_nodes$sort_name
+
+# 创建数据框
+all_nodes_df <- data.frame(x = x, y = y)
+filtered_nodes_df <- all_nodes_df[filtered_indices, ]
+
+# 创建散点图，将筛选出的节点染成红色
+ggplot() +
+  geom_point(data = all_nodes_df, aes(x = x, y = y), color = "black", alpha = 0.5) +
+  geom_point(data = filtered_nodes_df, aes(x = x, y = y), color = "red") +
+  labs(x = "UMAP Dimension 1", y = "UMAP Dimension 2")
+```
+```{r}
+library(umap)
+library(ggplot2)
+
+set.seed(444)
+
+# 读取节点数据
+all_nodes <- read.csv("snoop_4th_node.csv", header = TRUE)
+filtered_nodes <- read.csv("snoop_4th_metal.csv", header = TRUE)  # 包含筛选出的节点的CSV文件
+
+# 读取邻接矩阵数据
+adj_matrix <- read.csv("adjacency_matrix_snoop.csv", header = TRUE, row.names = 1)
+
+# 执行 UMAP 分析
+umap_result <- umap(adj_matrix)
+
+x <- umap_result$layout[, 1]
+y <- umap_result$layout[, 2]
+
+filtered_indices <- all_nodes$sort_name %in% filtered_nodes$sort_name
+
+# 创建数据框
+all_nodes_df <- data.frame(x = x, y = y)
+filtered_nodes_df <- all_nodes_df[filtered_indices, ]
+
+# 创建散点图，将筛选出的节点染成红色
+ggplot() +
+  geom_point(data = all_nodes_df, aes(x = x, y = y), color = "black", alpha = 0.5) +
+  geom_point(data = filtered_nodes_df, aes(x = x, y = y), color = "red") +
+  labs(x = "UMAP Dimension 1", y = "UMAP Dimension 2") +
+  ggtitle("UMAP-metal")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
