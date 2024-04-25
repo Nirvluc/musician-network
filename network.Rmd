@@ -41,7 +41,7 @@ filtered_node_names <- filtered_nodes$sort_name
 V(graph)$color <- ifelse(V(graph)$name %in% filtered_node_names, "red", "blue")
 
 # 设置特殊类别节点的颜色和形状
-special_nodes <- c("Snoop Dogg")  # 特殊类别节点的名称
+special_nodes <- c("Snoop Dogg")  # special node
 special_nodes_indices <- which(V(graph)$name %in% special_nodes)  # 特殊类别节点的索引
 
 # 创建与节点数量相同长度的颜色和形状属性值
